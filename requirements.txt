@@ -1,0 +1,13 @@
+# Verified end-to-end on Python 3.12 with these exact versions.
+pandas==2.2.2
+numpy==1.26.4
+scikit-learn==1.5.1
+matplotlib==3.9.2
+seaborn==0.13.2
+scipy==1.13.1
+mlxtend==0.23.3          # forward feature selection (SequentialFeatureSelector)
+xgboost==2.1.1
+shap==0.46.0             # model interpretation (src/model_comparison.py)
+tensorflow==2.17.0       # feed-forward neural-network section only
+transliterate==1.10.2    # Russian -> Latin bank-name transliteration
+jupyter                  # to run the notebook

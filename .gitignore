@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# Jupyter
+*.nbconvert.ipynb
+profile_default/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Large/derived (keep figures + the bundled dataset, ignore scratch)
+*.log
+*.tmp
+reports/cache/
