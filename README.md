@@ -8,9 +8,9 @@
 
 ## 💼 Business problem
 
-Interest-rate swaps are a core tool banks use to manage interest-rate risk. Whether a bank *adopts* swap-hedging is a signal of its risk posture, sophistication, and financial health — information valuable to **regulators** (monitoring systemic vulnerability) and **risk managers** (benchmarking peers). This project asks:
+Interest-rate swaps are a core tool banks use to manage interest-rate risk. Whether a bank *adopts* swap-hedging is a signal of its risk posture, sophistication, and financial health information valuable to **regulators** (monitoring systemic vulnerability) and **risk managers** (benchmarking peers). This project asks:
 
-> **Which balance-sheet and profitability indicators most strongly predict whether a bank uses swap-hedging — and can a machine-learning model forecast that decision reliably despite the rarity of hedging banks?**
+> **Which balance-sheet and profitability indicators most strongly predict whether a bank uses swap-hedging and can a machine-learning model forecast that decision reliably despite the rarity of hedging banks?**
 
 ## 📊 Dataset
 
