@@ -2,7 +2,7 @@
 
 **A machine-learning study of which financial indicators drive a bank's decision to hedge interest-rate risk with swaps - on a real 6-year panel of 529 Russian banks (2016–2021).**
 
-![Python](https://img.shields.io/badge/Python-3.12-blue) ![ML](https://img.shields.io/badge/ML-XGBoost%20%7C%20RandomForest%20%7C%20Ensemble-orange) ![Domain](https://img.shields.io/badge/Domain-Financial%20Risk-green)
+![Python](https://img.shields.io/badge/Python-3.12-blue) ![ML](https://img.shields.io/badge/ML-XGBoost%20%7C%20RandomForest%20%7C%20Ensemble-orange) ![Domain](https://img.shields.io/badge/Domain-Financial%20Risk-green) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
