@@ -1,0 +1,22 @@
+{
+  "trained_on": "2026-07-14",
+  "n_samples": 2354,
+  "n_features": 15,
+  "class_balance": {
+    "0": 2165,
+    "1": 189
+  },
+  "cv": {
+    "folds": 5,
+    "roc_auc_mean": 0.9631,
+    "roc_auc_std": 0.0113
+  },
+  "tuned_threshold": 0.28,
+  "test": {
+    "roc_auc": 0.953,
+    "accuracy": 0.9575,
+    "precision": 0.7143,
+    "recall": 0.7895,
+    "f1": 0.75
+  }
+}

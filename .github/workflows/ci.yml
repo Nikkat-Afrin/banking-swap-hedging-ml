@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install test dependencies
+        run: pip install pandas scikit-learn xgboost joblib pytest
+
+      - name: Run pipeline tests
+        run: pytest tests/ -v
+
+      - name: Train model (smoke run, 3 folds)
+        run: python src/train.py --folds 3

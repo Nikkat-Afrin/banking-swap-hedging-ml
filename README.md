@@ -2,7 +2,8 @@
 
 **A machine-learning study of which financial indicators drive a bank's decision to hedge interest-rate risk with swaps - on a real 6-year panel of 529 Russian banks (2016–2021).**
 
-![Python](https://img.shields.io/badge/Python-3.12-blue) ![ML](https://img.shields.io/badge/ML-XGBoost%20%7C%20RandomForest%20%7C%20Ensemble-orange) ![Domain](https://img.shields.io/badge/Domain-Financial%20Risk-green) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![CI](https://github.com/Nikkat-Afrin/banking-swap-hedging-ml/actions/workflows/ci.yml/badge.svg)](https://github.com/Nikkat-Afrin/banking-swap-hedging-ml/actions/workflows/ci.yml) ![Python](https://img.shields.io/badge/Python-3.12-blue) ![ML](https://img.shields.io/badge/ML-XGBoost%20%7C%20RandomForest%20%7C%20Ensemble-orange) ![Domain](https://img.shields.io/badge/Domain-Financial%20Risk-green)
+ [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
@@ -69,16 +70,40 @@ jupyter lab notebooks/swap_hedging_adoption.ipynb
 
 # 2) Reproducible model comparison + figures (writes to reports/)
 python src/model_comparison.py
+
+# 3) Production pipeline: cross-validated training + persisted model
+python src/train.py                                # writes models/swap_hedging_xgb.joblib + reports/metrics.json
+
+# 4) Batch scoring with the persisted model
+python src/predict.py data/Mevliutov_Data.csv --out predictions.csv
+
+# 5) Pipeline tests
+pytest tests/
 ```
+
+**Production pipeline highlights** (`src/train.py` / `src/predict.py`):
+- 5-fold stratified cross-validation (CV ROC-AUC **0.963 ± 0.011**, test **0.953**)
+- decision threshold tuned on out-of-fold predictions (F1-optimal **0.28** — the default 0.5 cutoff throws away recall at an 8% positive rate)
+- self-contained inference bundle (model + scaler + feature columns + threshold) so scoring can never drift from training preprocessing
+- model documentation in [`models/MODEL_CARD.md`](models/MODEL_CARD.md), metrics in `reports/metrics.json`, tests + CI on every push
 
 ## 🗂️ Repository structure
 ```
 banking-swap-hedging-ml/
 ├── data/Mevliutov_Data.csv            # bundled dataset (2,354 × 15)
 ├── notebooks/swap_hedging_adoption.ipynb   # full EDA + modeling narrative (runs end-to-end)
-├── src/model_comparison.py            # reproducible, imbalance-aware model comparison
+├── src/
+│   ├── data_prep.py                   # shared feature preparation (train == inference)
+│   ├── model_comparison.py            # reproducible, imbalance-aware model comparison
+│   ├── train.py                       # CV training + threshold tuning + model persistence
+│   └── predict.py                     # batch scoring CLI
+├── models/
+│   ├── swap_hedging_xgb.joblib        # persisted inference bundle
+│   └── MODEL_CARD.md                  # model documentation
+├── tests/test_pipeline.py             # data-quality + pipeline tests (CI)
 ├── reports/
 │   ├── model_comparison.md            # generated metrics table
+│   ├── metrics.json                   # CV + test metrics from src/train.py
 │   └── figures/                       # ROC, confusion matrix, SHAP summary
 ├── requirements.txt
 └── README.md

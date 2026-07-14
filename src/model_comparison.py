@@ -21,7 +21,6 @@ import matplotlib.pyplot as plt
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.impute import KNNImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier, VotingClassifier
@@ -30,32 +29,13 @@ from sklearn.metrics import (accuracy_score, precision_score, recall_score,
                              confusion_matrix, ConfusionMatrixDisplay)
 import xgboost as xgb
 
+from data_prep import load_and_prepare
+
 warnings.filterwarnings("ignore")
 RNG = 47
 ROOT = Path(__file__).resolve().parents[1]
 FIG = ROOT / "reports" / "figures"
 FIG.mkdir(parents=True, exist_ok=True)
-
-
-def load_and_prepare():
-    df = pd.read_csv(ROOT / "data" / "Mevliutov_Data.csv")
-    # Drop identifier / junk columns if present
-    df = df.drop(columns=[c for c in ["Bank", "Reg", "Unnamed: 15"] if c in df.columns])
-    y = df["Hedge_indicator"].astype(int)
-    X = df.drop(columns=["Hedge_indicator"])
-    # Percent-formatted strings (e.g. "32.4%") -> float
-    for c in X.select_dtypes(include="object").columns:
-        s = X[c].dropna().astype(str)
-        if s.str.contains("%").any():
-            X[c] = (X[c].astype(str).str.replace("%", "", regex=False)
-                    .replace({"nan": np.nan, "None": np.nan}).astype(float))
-    # One-hot the remaining categoricals (Status)
-    X = pd.get_dummies(X, columns=list(X.select_dtypes(include="object").columns),
-                       drop_first=True)
-    # KNN imputation for the few missing numeric values
-    X = pd.DataFrame(KNNImputer(n_neighbors=5).fit_transform(X),
-                     columns=X.columns, index=X.index)
-    return X, y
 
 
 def evaluate(name, model, X_tr, X_te, y_tr, y_te, roc_store):
