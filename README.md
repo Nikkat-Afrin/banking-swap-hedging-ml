@@ -87,6 +87,10 @@ pytest tests/
 - self-contained inference bundle (model + scaler + feature columns + threshold) so scoring can never drift from training preprocessing
 - model documentation in [`models/MODEL_CARD.md`](models/MODEL_CARD.md), metrics in `reports/metrics.json`, tests + CI on every push
 
+## 🕹️ Interactive model explorer
+
+**Live: <https://nikkat-afrin.github.io/banking-swap-hedging-ml/>** - drag the decision-threshold slider and watch the confusion matrix, precision, recall and F1 update; plus the ROC curve with the tuned operating point, per-class score distributions, and feature importances. Fully static (no server): every slider state is precomputed from the held-out test set. Regenerate with `python src/build_model_explorer.py`.
+
 ## 🗂️ Repository structure
 ```
 banking-swap-hedging-ml/
