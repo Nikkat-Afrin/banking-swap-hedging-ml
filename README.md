@@ -1,6 +1,6 @@
 # Predicting Swap-Hedging Adoption in Russian Banks 🏦
 
-**A machine-learning study of which financial indicators drive a bank's decision to hedge interest-rate risk with swaps - on a real 6-year panel of 529 Russian banks (2016–2021).**
+**A machine-learning study of which financial indicators drive a bank's decision to hedge interest-rate risk with swaps - on a real 6-year panel of 529 Russian banks (2016-2021).**
 
 [![CI](https://github.com/Nikkat-Afrin/banking-swap-hedging-ml/actions/workflows/ci.yml/badge.svg)](https://github.com/Nikkat-Afrin/banking-swap-hedging-ml/actions/workflows/ci.yml) ![Python](https://img.shields.io/badge/Python-3.12-blue) ![ML](https://img.shields.io/badge/ML-XGBoost%20%7C%20RandomForest%20%7C%20Ensemble-orange) ![Domain](https://img.shields.io/badge/Domain-Financial%20Risk-green)
  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -17,10 +17,10 @@ Interest-rate swaps are a core tool banks use to manage interest-rate risk. Whet
 
 | | |
 |---|---|
-| **Source** | *Financial indicators of Russian banks 2016–2021* — Mikhail Mevliutov, [Mendeley Data, DOI 10.17632/8xwbh5jxkf.1](https://data.mendeley.com/datasets/8xwbh5jxkf/1) (form 0409102 / SPARK-Interfax) |
+| **Source** | *Financial indicators of Russian banks 2016-2021* - Mikhail Mevliutov, [Mendeley Data, DOI 10.17632/8xwbh5jxkf.1](https://data.mendeley.com/datasets/8xwbh5jxkf/1) (form 0409102 / SPARK-Interfax) |
 | **Shape** | 2,354 bank-year observations · 529 unique banks · 15 variables |
 | **Target** | `Hedge_indicator` (1 = adopted swap-hedging, 0 = did not) |
-| **Class balance** | **~8% positive** — strongly imbalanced |
+| **Class balance** | **~8% positive** - strongly imbalanced |
 | **Features** | Log-transformed balance-sheet measures (`LN_Loans`, `LN_Securities`, `LN_Deposits`, `LN_Equity`, `LN_EBT`), ratios (`ROA`, `ROE`, `H1.0`, `H4`, `Overdue_debt_ratio`), `Year`, and bank `Status` |
 
 The raw CSV is bundled in [`data/`](data/) so the project is fully self-contained and reproducible.
@@ -29,13 +29,13 @@ The raw CSV is bundled in [`data/`](data/) so the project is fully self-containe
 
 A full-cycle supervised-learning workflow:
 
-1. **Cleaning** — transliterated Cyrillic bank names to Latin (`transliterate`), parsed percent-formatted ratio strings to floats, typed `Status` as categorical.
-2. **EDA** — univariate (distributions, outliers), bivariate (numeric↔target, status↔target), and a correlation heatmap. Hedging banks skew toward larger loans/securities/deposits and stronger earnings.
-3. **Missing values** — median imputation for low-missingness columns and **KNN imputation** for `H4` (~15% missing).
-4. **Feature selection** — forward **Sequential Feature Selection** (mlxtend) → a compact, interpretable feature set led by `LN_Loans`, `LN_Securities`, `Year`, `ROA`, `Overdue_debt_ratio`, `Status_Reorganizing`.
-5. **Modeling** — Logistic Regression, Decision Tree, Random Forest, **XGBoost**, a Keras feed-forward neural network, a **soft-voting ensemble**, and a custom **dynamic logistic ensemble** ([ref](https://arxiv.org/html/2411.18649v1)), all tuned with `GridSearchCV`.
-6. **Imbalance handling** — cost-sensitive learning via `class_weight='balanced'` and XGBoost `scale_pos_weight` (≈11.5) so the minority "hedge" class is not ignored.
-7. **Evaluation** — accuracy, precision, recall, F1, and **ROC-AUC** on a held-out stratified test set, plus confusion matrices and **SHAP** interpretation.
+1. **Cleaning** - transliterated Cyrillic bank names to Latin (`transliterate`), parsed percent-formatted ratio strings to floats, typed `Status` as categorical.
+2. **EDA** - univariate (distributions, outliers), bivariate (numeric↔target, status↔target), and a correlation heatmap. Hedging banks skew toward larger loans/securities/deposits and stronger earnings.
+3. **Missing values** - median imputation for low-missingness columns and **KNN imputation** for `H4` (~15% missing).
+4. **Feature selection** - forward **Sequential Feature Selection** (mlxtend) → a compact, interpretable feature set led by `LN_Loans`, `LN_Securities`, `Year`, `ROA`, `Overdue_debt_ratio`, `Status_Reorganizing`.
+5. **Modeling** - Logistic Regression, Decision Tree, Random Forest, **XGBoost**, a Keras feed-forward neural network, a **soft-voting ensemble**, and a custom **dynamic logistic ensemble** ([ref](https://arxiv.org/html/2411.18649v1)), all tuned with `GridSearchCV`.
+6. **Imbalance handling** - cost-sensitive learning via `class_weight='balanced'` and XGBoost `scale_pos_weight` (≈11.5) so the minority "hedge" class is not ignored.
+7. **Evaluation** - accuracy, precision, recall, F1, and **ROC-AUC** on a held-out stratified test set, plus confusion matrices and **SHAP** interpretation.
 
 ## 📈 Results
 
@@ -55,9 +55,9 @@ Test-set performance from the reproducible comparison pipeline ([`src/model_comp
 </p>
 
 **Key findings**
-- Tree ensembles reach **ROC-AUC ≈ 0.95–0.96** on an 8%-positive problem. The **soft-voting ensemble** gives the best precision/recall balance (Accuracy 0.968, F1 0.805, recall 0.82), while **Random Forest** is the most precise (0.955).
+- Tree ensembles reach **ROC-AUC ≈ 0.95-0.96** on an 8%-positive problem. The **soft-voting ensemble** gives the best precision/recall balance (Accuracy 0.968, F1 0.805, recall 0.82), while **Random Forest** is the most precise (0.955).
 - **Larger, better-capitalized, more profitable banks** are far more likely to hedge: `LN_Loans`, `LN_Securities`, `LN_Deposits` and `LN_EBT` are the dominant SHAP drivers; distressed/bankrupt banks essentially never hedge.
-- Cost-sensitive weighting was essential — without it the minority class collapses (Logistic Regression trades precision for recall, F1 ≈ 0.45).
+- Cost-sensitive weighting was essential - without it the minority class collapses (Logistic Regression trades precision for recall, F1 ≈ 0.45).
 
 ## ▶️ How to run
 
@@ -83,7 +83,7 @@ pytest tests/
 
 **Production pipeline highlights** (`src/train.py` / `src/predict.py`):
 - 5-fold stratified cross-validation (CV ROC-AUC **0.963 ± 0.011**, test **0.953**)
-- decision threshold tuned on out-of-fold predictions (F1-optimal **0.28** — the default 0.5 cutoff throws away recall at an 8% positive rate)
+- decision threshold tuned on out-of-fold predictions (F1-optimal **0.28** - the default 0.5 cutoff throws away recall at an 8% positive rate)
 - self-contained inference bundle (model + scaler + feature columns + threshold) so scoring can never drift from training preprocessing
 - model documentation in [`models/MODEL_CARD.md`](models/MODEL_CARD.md), metrics in `reports/metrics.json`, tests + CI on every push
 
